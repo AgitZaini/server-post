@@ -15,14 +15,11 @@ const { authentication, authorization, authenticationCustomer } = require("../mi
 
 router.post("/register", Controller.DesignerRegister);
 router.post("/login", Controller.login);
+router.post("/google-login", Controller.loginGoogle);
 
 router.get("/", Controller.getPost);
 router.post("/posting", authentication, upload.single("image"), Controller.addPost);
-router.post("/postings", upload.array("images", 5), (req, res) => {
-    console.log(req.files);
-    res.status(200).json(req.files);
-});
+router.post("/postings", authentication, upload.array("images", 5), Controller.addMultiplePost);
 router.get("/profile", authentication, Controller.getProfile);
-router.get("/:id");
 
 module.exports = router;

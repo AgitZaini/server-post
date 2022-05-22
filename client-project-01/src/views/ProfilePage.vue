@@ -52,8 +52,8 @@
                                     <div class="modal-body">
                                         <form enctype="multipart/form-data" @submit.prevent="handleAddMultiplePost">
                                             <div class="mb-3">
-                                                <label for="formFileSm" class="form-label">Put Your Photo Here</label>
-                                                <input @change="(e) => (images = e.target.files[0])" class="form-control form-control-sm" id="formFileSm" type="file" multiple />
+                                                <label for="formFileSm1" class="form-label">Put Your Photo Here</label>
+                                                <input @change="(e) => (image = e.target.files[0])" class="form-control form-control-sm" id="formFileSml" type="file" multiple />
                                             </div>
                                             <div class="mb-3">
                                                 <label for="exampleInputPassword1" class="form-label">Caption</label>

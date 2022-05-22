@@ -23,7 +23,7 @@
 
                         <div class="text-center mb-3">
                             <div class="">
-                                <a href="#" class="btn btn-block btn-social btn-google"> google </a>
+                                <a href="#" class="btn btn-block btn-social btn-google" @click.prevent="googleHandler"> google </a>
                             </div>
                         </div>
 
@@ -53,7 +53,7 @@ export default {
         };
     },
     methods: {
-        ...mapActions(userStore, ["login"]),
+        ...mapActions(userStore, ["login", "googleLogin"]),
         //import (nama store, sebuah array yang di isi nama nama action yg di panggil)
         handleLogin() {
             console.log("JALAN");
@@ -61,6 +61,22 @@ export default {
         },
         handleClick() {
             this.$router.push({ name: "Register" });
+        },
+        successLogin(data) {
+            localStorage.setItem("access_token", data.access_token);
+            localStorage.setItem("name", data.name);
+            localStorage.setItem("email", data.email);
+            localStorage.setItem("role", data.role);
+        },
+        async googleHandler() {
+            try {
+                const googleUser = await this.$gAuth.signIn();
+                if (!googleUser) return null;
+                const id_token = googleUser.getAuthResponse().id_token;
+                this.googleLogin(id_token);
+            } catch (error) {
+                console.log(error);
+            }
         },
     },
 };

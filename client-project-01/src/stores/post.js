@@ -16,6 +16,8 @@ const postStore = defineStore({
         async addPost() {
             try {
                 let formData = new FormData();
+
+                console.log(formData, "INI RESPONNYA FORMDATA");
                 formData.append("caption", this.caption);
                 formData.append("image", this.image);
                 //request ke server
@@ -36,8 +38,9 @@ const postStore = defineStore({
             try {
                 let formData = new FormData();
                 formData.append("caption", this.caption);
-                formData.append("images", this.images);
+                formData.append("image", this.images);
                 //request ke server
+                console.log(formData, "INI RESPONNYA FORMDATA");
                 let response = await axios({
                     url: "/pub/postings",
                     method: "post",

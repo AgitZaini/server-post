@@ -128,8 +128,8 @@ class Publics {
     }
 
     static async addPost(req, res, next) {
-        console.log(req.body);
-        console.log(req.file);
+        console.log(req.body, "INI BODY");
+        console.log(req.file, "INI FILE");
         try {
             const { caption } = req.body;
             const userId = req.user.id;
@@ -139,6 +139,30 @@ class Publics {
             console.log(userId + "INIGGG");
             if (isDesigner.role === "Designer" || isDesigner.role === "Admin") {
                 const newPost = await Post.create({ caption: caption, image: req.file.filename, UserId: userId, status: "Active", like: 0 });
+                res.status(201).json(newPost);
+                // res.status(201).json("=======", isDesigner);
+            } else {
+                throw {
+                    status: 403,
+                    message: "Not Authorized",
+                };
+            }
+        } catch (error) {
+            next(error);
+        }
+    }
+    static async addMultiplePost(req, res, next) {
+        console.log(req.body, "INI BODY");
+        console.log(req.files, "INI FILE");
+        try {
+            const { caption } = req.body;
+            const userId = req.user.id;
+            const isDesigner = await User.findByPk(userId);
+
+            console.log(isDesigner + "INICLG");
+            console.log(userId + "INIGGG");
+            if (isDesigner.role === "Designer" || isDesigner.role === "Admin") {
+                const newPost = await Post.create({ caption: caption, image: req.files.filename, UserId: userId, status: "Active", like: 0 });
                 res.status(201).json(newPost);
                 // res.status(201).json("=======", isDesigner);
             } else {

@@ -43,6 +43,28 @@ const userStore = defineStore("userStore", {
                 console.log(error.response);
             }
         },
+        setLocalStorage(user) {
+            localStorage.setItem("access_token", user.access_token);
+            localStorage.setItem("username", user.username);
+            this.access_token = localStorage.access_token;
+        },
+        async googleLogin(id_token) {
+            // console.log(id_token + "+_+_+_");
+            try {
+                const logUser = await axios({
+                    url: "/pub/google-login",
+                    method: "post",
+                    data: {
+                        id_token,
+                    },
+                });
+                this.setLocalStorage(logUser.data);
+                // console.log(logUser + "_+_+_+");
+                this.router.push({ name: "Homepage" });
+            } catch (error) {
+                console.log(error);
+            }
+        },
     },
 });
 
