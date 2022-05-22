@@ -2,6 +2,8 @@ const { User, Post } = require("../models");
 const { comparePassword } = require("../helpers/bcrypt");
 const { sign } = require("../helpers/jwt");
 const { Op } = require("sequelize");
+const { OAuth2Client } = require("google-auth-library");
+const client = new OAuth2Client(process.env.CLIENT_ID);
 
 class Publics {
     //!==================== Auth User ======================
@@ -62,7 +64,6 @@ class Publics {
             })
             .then((tiket) => {
                 payload = tiket.getPayload();
-                // console.log(payload);
                 return User.findOne({
                     where: { email: payload.email },
                 });
@@ -73,8 +74,8 @@ class Publics {
                         email: payload.email,
                         password: "ngasalaja",
                         role: "Designer",
-                        imgUrl: payload.image ? payload.image : "https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png",
-                        name: payload.name,
+                        imgUrl: "https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png",
+                        name: "this name",
                     };
                     return User.create(newUser);
                 } else {
@@ -85,9 +86,10 @@ class Publics {
                 const payload = { email: user.email, id: user.id };
                 const access_token = sign(payload);
                 // console.log(user, "THEN TERAKHIR");
-                res.status(200).json({ access_token, name: user.name, email: user.email, role: user.role, id: uscer.id });
+                res.status(200).json({ access_token, name: user.name, email: user.email, role: user.role, id: user.id });
             })
             .catch((error) => {
+                console.log(error);
                 next(error);
             });
     }
@@ -98,7 +100,7 @@ class Publics {
             const limitPage = req.query.size || 6;
             const offsetPage = req.query.page ? req.query.page * limitPage : 0;
             let optionSearch = [];
-            if (req.query.name) optionSearch.push({ name: { [Op.iLike]: `%${req.query.name}%` } });
+            if (req.query.caption) optionSearch.push({ caption: { [Op.iLike]: `%${req.query.caption}%` } });
             console.log(optionSearch);
             const option = {
                 include: [

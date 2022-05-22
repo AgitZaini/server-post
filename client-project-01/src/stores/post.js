@@ -10,6 +10,7 @@ const postStore = defineStore({
             image: "",
             images: [],
             count: 0,
+            // posts: [],
         };
     },
     actions: {
@@ -91,7 +92,24 @@ const postStore = defineStore({
                 console.log(dataPost, "ini store");
                 this.count = Math.ceil(dataPost.data.count / 8);
                 console.log(this.count);
-            } catch (error) {}
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        async allAccommodationsFilter(name) {
+            this.posts = [];
+            try {
+                // let response = await axios.get(`/pub?name=${name}`);
+                let response = await axios({
+                    url: `/pub?caption=${name}`,
+                    method: "get",
+                });
+                console.log(response.data.rows, "ALL ACCOM");
+                this.posts = response.data.rows;
+                this.count = Math.ceil(response.data.count / 8);
+            } catch (error) {
+                console.log(error);
+            }
         },
     },
 });

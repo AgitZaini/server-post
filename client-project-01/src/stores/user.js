@@ -55,7 +55,7 @@ const userStore = defineStore("userStore", {
                     url: "/pub/google-login",
                     method: "post",
                     data: {
-                        id_token,
+                        access_token: id_token,
                     },
                 });
                 this.setLocalStorage(logUser.data);

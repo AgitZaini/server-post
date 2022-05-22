@@ -13,6 +13,10 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="#"> <router-link to="/profile">Profile</router-link></a>
                     </li>
+                    <form class="d-flex" @submit.prevent="handleFilter">
+                        <input v-model="caption" class="form-control me-2" type="search" placeholder="Search Name" aria-label="Search" />
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
                 </ul>
                 <li class="d-flex nav-item">
                     <button class="btn btn-success active text m-1 pb-2" aria-current="page" href="#"><router-link to="/login">Login</router-link></button>
@@ -20,24 +24,31 @@
                 <li class="d-flex nav-item">
                     <button class="btn btn-danger active" aria-current="page" href="#" @click.prevent="logout">Logout</button>
                 </li>
-                <!-- <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form> -->
             </div>
         </div>
     </nav>
 </template>
 
 <script>
+import { mapActions, mapState } from "pinia";
+import postStore from "../stores/post";
 export default {
     name: "Navbar",
+    data() {
+        return {
+            caption: "",
+        };
+    },
     methods: {
+        ...mapActions(postStore, ["allAccommodationsFilter"]),
         handleLogin() {},
         logout() {
             localStorage.clear();
             this.isLogin = false;
             this.$router.push("/login");
+        },
+        handleFilter() {
+            this.allAccommodationsFilter(this.caption);
         },
     },
 };
