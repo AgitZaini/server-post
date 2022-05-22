@@ -52,10 +52,50 @@ class Publics {
             });
     }
 
+    static loginGoogle(req, res, next) {
+        const { access_token } = req.body;
+        let payload;
+        client
+            .verifyIdToken({
+                idToken: access_token,
+                audience: process.env.CLIENT_ID,
+            })
+            .then((tiket) => {
+                payload = tiket.getPayload();
+                // console.log(payload);
+                return User.findOne({
+                    where: { email: payload.email },
+                });
+            })
+            .then((data) => {
+                if (!data) {
+                    const newUser = {
+                        email: payload.email,
+                        password: "ngasalaja",
+                        role: "Designer",
+                        imgUrl: payload.image ? payload.image : "https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png",
+                        name: payload.name,
+                    };
+                    return User.create(newUser);
+                } else {
+                    return data;
+                }
+            })
+            .then((user) => {
+                const payload = { email: user.email, id: user.id };
+                const access_token = sign(payload);
+                // console.log(user, "THEN TERAKHIR");
+                res.status(200).json({ access_token, name: user.name, email: user.email, role: user.role, id: uscer.id });
+            })
+            .catch((error) => {
+                next(error);
+            });
+    }
+
     //!==================== Home Page ======================
     static async getPost(req, res, next) {
         try {
-            const limitPage = req.query.size || 8;
+            const limitPage = req.query.size || 6;
             const offsetPage = req.query.page ? req.query.page * limitPage : 0;
             let optionSearch = [];
             if (req.query.name) optionSearch.push({ name: { [Op.iLike]: `%${req.query.name}%` } });

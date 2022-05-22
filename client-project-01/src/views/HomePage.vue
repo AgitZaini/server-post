@@ -1,34 +1,35 @@
 <template>
     <div class="container">
         <div class="row px-3">
-            <!-- <div class="col-lg-10 col-xl-9 card px-0"> -->
-            <!-- <div class="img-left d-none d-md-flex"></div> -->
+            <div class="card px-0">
+                <!-- <div class="col-lg-10 col-xl-9 card px-0"> -->
+                <!-- <div class="img-left d-none d-md-flex"></div> -->
 
-            <div class="card-body">
-                <CardPost v-for="el in posts" :key="el.id" :post="el" />
+                <div class="card-body row m-5 pb-5">
+                    <CardPost v-for="el in posts" :key="el.id" :post="el" />
 
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-center">
-                        <li v-for="n in count" :key="n" @click.prevent="pagination(n - 1)" class="page-item">
-                            <a class="page-link" href="#">{{ n }}</a>
-                        </li>
-                    </ul>
-                </nav>
-                <!-- <nav aria-label="Page navigation example">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center">
+                            <li v-for="n in count" :key="n" @click.prevent="pagination(n - 1)" class="page-item">
+                                <a class="page-link" href="#">{{ n }}</a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <!-- <nav aria-label="Page navigation example">
                         <ul class="pagination">
                             <li v-for="n in count" :key="n" @click.prevent="pagination(n - 1)" class="page-item">
                                 <a class="page-link" href="#">{{ n }}</a>
                             </li>
                         </ul>
                     </nav> -->
-                <hr class="my-4" />
+                    <hr class="my-4" />
 
-                <div class="text-center mb-2">
-                    This is our FOOTER
-                    <a href="#" class="register-link">Here Is</a>
+                    <div class="text-center mb-2">
+                        This is our FOOTER
+                        <a class="register-link">Here Is</a>
+                    </div>
                 </div>
             </div>
-            <!-- </div> -->
         </div>
     </div>
 </template>

@@ -1,5 +1,5 @@
 <template>
-    <div class="card" style="width: 18rem">
+    <div class="card m-2 pb-10" style="width: 18rem">
         <img :src="imageX" class="card-img-top" alt="..." />
         <div class="card-body">
             <p class="card-text">{{ post.caption }}</p>

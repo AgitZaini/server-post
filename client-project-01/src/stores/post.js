@@ -8,6 +8,7 @@ const postStore = defineStore({
             posts: [],
             caption: "",
             image: "",
+            images: [],
             count: 0,
         };
     },
@@ -27,6 +28,25 @@ const postStore = defineStore({
                 this.getPostById();
                 this.router.push({ name: "ProfilePage" });
                 console.log(response, "INI RESPONNYA");
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        async addMultiplePost() {
+            try {
+                let formData = new FormData();
+                formData.append("caption", this.caption);
+                formData.append("images", this.images);
+                //request ke server
+                let response = await axios({
+                    url: "/pub/postings",
+                    method: "post",
+                    data: formData,
+                    headers: { access_token: localStorage.getItem("access_token") },
+                });
+                this.getPostById();
+                this.router.push({ name: "ProfilePage" });
+                console.log(response, "INI RESPONNYA Multiple");
             } catch (error) {
                 console.log(error);
             }

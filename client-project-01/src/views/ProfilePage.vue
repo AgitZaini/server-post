@@ -1,40 +1,77 @@
 <template>
     <div class="container">
         <div class="row px-3">
-            <div class="col-lg-10 col-xl-9 card px-0">
+            <div class="card px-0">
                 <!-- <div class="img-left d-none d-md-flex"></div> -->
-                <div class="card-body">
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Add Post</button>
+                <div class="card-body row m-5 pb-5">
+                    <!-- Button trigger modal Single Upload -->
+                    <div class="">
+                        <button type="button" class="btn btn-dark m-5 pb-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Add Single Post</button>
 
-                    <!-- Modal -->
-                    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <!-- <b> || </b> -->
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="staticBackdropLabel">Single Upload Photo</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form enctype="multipart/form-data" @submit.prevent="handleAddPost">
+                                            <div class="mb-3">
+                                                <label for="formFileSm" class="form-label">Put Your Photo Here</label>
+                                                <input @change="(e) => (image = e.target.files[0])" class="form-control form-control-sm" id="formFileSm" type="file" />
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="exampleInputPassword1" class="form-label">Caption</label>
+                                                <input v-model="caption" type="text" class="form-control" id="exampleInputPassword1" />
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">Upload</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
-                                <div class="modal-body">
-                                    <form enctype="multipart/form-data" @submit.prevent="handleAddPost">
-                                        <div class="mb-3">
-                                            <label for="formFileSm" class="form-label">Put Your Photo Here</label>
-                                            <input @change="(e) => (image = e.target.files[0])" class="form-control form-control-sm" id="formFileSm" type="file" />
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="exampleInputPassword1" class="form-label">Caption</label>
-                                            <input v-model="caption" type="text" class="form-control" id="exampleInputPassword1" />
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-primary">Upload</button>
-                                        </div>
-                                    </form>
+                            </div>
+                        </div>
+
+                        <!-- Trigger Modal Multiple Upload -->
+                        <button type="button" class="btn btn-dark m-5 pb-2" data-bs-toggle="modal" data-bs-target="#multiple">Add Multiple Post</button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="multiple" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="multipleLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="multipleLabel">Multiple Upload Photo</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form enctype="multipart/form-data" @submit.prevent="handleAddMultiplePost">
+                                            <div class="mb-3">
+                                                <label for="formFileSm" class="form-label">Put Your Photo Here</label>
+                                                <input @change="(e) => (images = e.target.files[0])" class="form-control form-control-sm" id="formFileSm" type="file" multiple />
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="exampleInputPassword1" class="form-label">Caption</label>
+                                                <input v-model="caption" type="text" class="form-control" id="exampleInputPassword1" />
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">Upload</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row mx-auto">
+                    <hr class="my-4" />
+                    <!-- Card Post -->
+                    <div class="row m-50 pb-5">
                         <!-- <div class="col"> -->
                         <CardPost v-for="el in posts" :key="el.id" :post="el" />
                         <!-- </div> -->
@@ -60,9 +97,12 @@ export default {
 
     data() {},
     methods: {
-        ...mapActions(postStore, ["getPostById", "addPost"]),
+        ...mapActions(postStore, ["getPostById", "addPost", "addMultiplePost"]),
         handleAddPost() {
             this.addPost();
+        },
+        handleAddMultiplePost() {
+            this.addMultiplePost();
         },
     },
     computed: {
